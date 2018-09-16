@@ -7,19 +7,28 @@ output: github_document
 
 #Problem 0.1
 
-This “problem” focuses on the use of R Markdown to write reproducible reports, GitHub for version control, and R Projects to organize your work.
+This “problem” focuses on the use of R Markdown to write reproducible reports,
+GitHub for version control, and R Projects to organize your work.
 
 To that end:
 
-* create a public GitHub repo + local R Project; we suggest naming this repo / directory p8105_hw1_YOURUNI (e.g.  p8105_hw1_ajg2202 for Jeff), but that’s not required
-* create a single .Rmd file named p8105_hw1_YOURUNI.Rmd that renders to github_document
-Your solutions to Problems 1 and 2 should be implemented in your .Rmd file, and your git commit history should reflect the process you used to solve these Problems.
+* create a public GitHub repo + local R Project; we suggest naming this 
+repo / directory p8105_hw1_YOURUNI (e.g.  p8105_hw1_ajg2202 for Jeff), but that’s
+not required
+* create a single .Rmd file named p8105_hw1_YOURUNI.Rmd that renders to 
+github_document
 
-For this Problem, we will assess adherence to the instructions above regarding repo structure, git commit history, and whether we are able to knit your .Rmd to ensure that your work is reproducible.
+Your solutions to Problems 1 and 2 should be implemented in your .Rmd file, and 
+your git commit history should reflect the process you used to solve these Problems.
+
+For this Problem, we will assess adherence to the instructions above regarding repo
+structure, git commit history, and whether we are able to knit your .Rmd to ensure 
+that your work is reproducible.
 
 #Problem 0.2
 
-This “problem” focuses on correct styling for your solutions to Problems 1 and 2. We will look for:
+This “problem” focuses on correct styling for your solutions to Problems 1 and 2.
+We will look for:
 
 * meaningful variable / object names
 * readable code (one command per line; adequate whitespace and indentation; etc)
@@ -30,26 +39,93 @@ This “problem” focuses on correct styling for your solutions to Problems 1 a
 
 Create a data frame comprised of:
 
-* A random sample of size 10 from a uniform[0, 5] distribution
+* A random sample of size 10 from a uniform [0, 5] distribution
 * A logical vector indicating whether elements of the sample are greater than 2
 * A (length-10) character vector
 * A (length-10) factor vector
 
 ```{r}
 
+library(tidyverse)
+
+set.seed(1)
+
+example_df = tibble(
+  vec_random = rnorm(10, mean = 2.5, sd = 1), ##still need to figure out what to set SD
+  vec_random_greater_2 = vec_random > 2,
+  vec_char = c("Puppies", "make", "the", "world", "go", "round", "and", "round", 
+               "and", "round"),
+  vec_factor = factor(c("male", "male", "female", "female", "male", "male", 
+                        "female", "female", "male", "female"))
+)
+
 ```
 
-Try to take the mean of each variable in your dataframe. What works and what doesn’t? Why?
+Try to take the mean of each variable in your dataframe. What works and what 
+doesn’t? Why?
+
+
+
+```{r}
+mean(vec_random)
+
+mean(vec_random_greater_2)
+
+mean(vec_char)
+
+mean(vec_factor)
+
+```
+
+In some cases, you can explicitly convert variables from one type to another. 
+Write a code chunk that applies the as.numeric function to the logical, character, 
+and factor variables (please show this chunk but not the output). What happens? 
+
 
 ```{r}
 
+vec_random_greater_2_factor = as.factor(vec_random_greater_2) 
+class(vec_random_greater_2_factor)
+
+vec_char_factor = as.factor(vec_char)
+class(vec_char_factor)
+
+vec_factor_factor = as.factor(vec_factor) 
+class(vec_factor_factor)
+
 ```
 
-In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). What happens? In a second code chunk, convert your character variable from character to factor to numeric; similarly, convert your factor variable from factor to character to numeric. What happens?
+
+In a second code chunk, convert your character variable from character to factor
+to numeric; similarly, convert your factor variable from factor to character to 
+numeric. What happens?
 
 ```{r}
+#vec_char: character to factor to numeric
+class(vec_char)
+vec_char
+#character
+
+vec_char_factor2 = as.factor(vec_char)
+class(vec_char_factor2)
+vec_char_factor2
+#factor
+
+vec_char_num = as.numeric(vec_char_factor2)
+class(vec_char_num)
+#numeric
+vec_char_num
+
+## orders them; lose the character information
+
+#vec_factor: factor to character to numeric
+
+
+
 
 ```
+
+
 
 #Problem 2
 
@@ -60,13 +136,18 @@ Create a data frame comprised of:
 * A logical vector indicating whether the x + y > 0
 * A numeric vector created by coercing the above logical vector
 * A factor vector created by coercing the above logical vector
-* Write a short description of your vector using inline R code, including: * the size of the dataset * the mean and median of x * the proportion of cases for which the logical vector is TRUE
+* Write a short description of your vector using inline R code, including: 
+* the size of the dataset * the mean and median of x * the proportion of cases 
+for which the logical vector is TRUE
 
 ```{r}
 
 ```
 
-Make a scatterplot of y vs x; color points using the logical variable (adding color = ... inside of aes in your ggplot code should help). Make a second and third scatterplot that color points using the numeric and factor variables, respectively, and comment on the color scales.
+Make a scatterplot of y vs x; color points using the logical variable (adding 
+color = ... inside of aes in your ggplot code should help). Make a second and 
+third scatterplot that color points using the numeric and factor variables, 
+respectively, and comment on the color scales.
 
 ```{r}
 
