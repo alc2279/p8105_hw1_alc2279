@@ -120,8 +120,20 @@ vec_char_num
 
 #vec_factor: factor to character to numeric
 
+class(vec_factor)
+#factor
+vec_factor
 
+vec_factor_char = as.character(vec_factor)
+class(vec_factor_char)
+#character 
+vec_factor_char
 
+vec_factor_char_num = as.numeric(vec_factor_char)
+#NAs introduced by coercion 
+class(vec_factor_char_num)
+vec_factor_char_num
+#loses all information => goes to NAs
 
 ```
 
@@ -136,13 +148,37 @@ Create a data frame comprised of:
 * A logical vector indicating whether the x + y > 0
 * A numeric vector created by coercing the above logical vector
 * A factor vector created by coercing the above logical vector
+
+```{r}
+set.seed(9) 
+
+example_df2 = tibble(
+  x = rnorm(1000),
+  y = rnorm(1000),
+  z = (x + y) > 0,
+  z_num = as.numeric(z),
+  z_factor = as.factor(z)
+)
+
+nrow(example_df2)
+
+t = as.data.frame(example_df2, row.names = z, optional = TRUE)
+library(plyr)
+help(count)
+count(example_df2, vars = example_df$z)
+
+
+```
+
 * Write a short description of your vector using inline R code, including: 
 * the size of the dataset * the mean and median of x * the proportion of cases 
 for which the logical vector is TRUE
 
-```{r}
-
-```
+Next, I am going to describe the dataset that I just created.  There 
+are 'r nrow(example_df2)' columns and 'r nrow(example_df2)' rows. The mean 
+of x is 'r mean(x)' and the median is 'r median(x)'. There are XX cases in 
+which the logical vector, z is TRUE. 
+##still need to figure out last inline code
 
 Make a scatterplot of y vs x; color points using the logical variable (adding 
 color = ... inside of aes in your ggplot code should help). Make a second and 
@@ -151,11 +187,21 @@ respectively, and comment on the color scales.
 
 ```{r}
 
+ggplot(example_df2, aes(x = y, y = x, color = z)) + geom_point()
+
+ggplot(example_df2, aes(x = y, y = x, color = z_num)) + geom_point()
+
+ggplot(example_df2, aes(x = y, y = x, color = z_factor)) + geom_point()
+
+
 ```
 
 Export your first scatterplot to your project directory using ggsave.
 
-```{r setup, include=FALSE}
+```{r}
+
+ggplot(example_df2, aes(x = y, y = x, color = z)) + geom_point()
+ggsave("scatter_plot.pdf", height = 4, width = 6)
 
 ```
 
