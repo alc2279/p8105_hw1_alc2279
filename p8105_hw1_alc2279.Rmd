@@ -2,11 +2,12 @@
 title:  "P8105 Data Science: Homework 1"
 author: "Annie Clark (alc2279)"
 date:   2018-09-15
-output: github_document
+output: html_document
 ---
 
-#Problem 0.1
+#Problem 0.1 - Workflow
 
+###_Prompt:_
 This “problem” focuses on the use of R Markdown to write reproducible reports,
 GitHub for version control, and R Projects to organize your work.
 
@@ -22,10 +23,10 @@ Your solutions to Problems 1 and 2 should be implemented in your .Rmd file, and
 your git commit history should reflect the process you used to solve these Problems.
 
 For this Problem, we will assess adherence to the instructions above regarding repo
-structure, git commit history, and whether we are able to knit your .Rmd to ensure 
-that your work is reproducible.
+structure, git commit history, and whether we are able to knit your .Rmd to ensure
+that your work is reproducible._
 
-#Problem 0.2
+#Problem 0.2 - Styling
 
 This “problem” focuses on correct styling for your solutions to Problems 1 and 2.
 We will look for:
@@ -35,8 +36,9 @@ We will look for:
 * clearly-written text to explain code and results
 * a lack of superfluous code (e.g. no unused variables are defined)
 
-#Problem 1
+#Problem 1 - Variable types and coercion
 
+##Part 1 - Create  a data frame
 Create a data frame comprised of:
 
 * A random sample of size 10 from a uniform [0, 5] distribution
@@ -48,43 +50,57 @@ Create a data frame comprised of:
 
 library(tidyverse)
 
-set.seed(1)
+## set seed to ensure reproducibility
+set.seed(2)
 
-example_df = tibble(
-  vec_random = rnorm(10, mean = 2.5, sd = 1), ##still need to figure out what to set SD
-  vec_random_greater_2 = vec_random > 2,
+##define datframe containing four different types of vectors
+prob_1_data_frame = tibble(
+  vec_num_random_sample = rnorm(10, sd = 5),
+  vec_logical_random_sample_greater_2 = vec_num_random_sample > 2,
   vec_char = c("Puppies", "make", "the", "world", "go", "round", "and", "round", 
                "and", "round"),
   vec_factor = factor(c("male", "male", "female", "female", "male", "male", 
                         "female", "female", "male", "female"))
 )
-
 ```
 
+
+##Part 2 - Mean of variable types
 Try to take the mean of each variable in your dataframe. What works and what 
 doesn’t? Why?
 
 
-
 ```{r}
-mean(vec_random)
 
-mean(vec_random_greater_2)
+## specify to use this data frame when evaluating variables
+attach(prob_1_data_frame)
 
+## mean of vec_num_random_sample
+mean(vec_num_random_sample)
+
+##mean of vec_logical_random_sample_greater_2
+mean(vec_logical_random_sample_greater_2)
+
+## mean of vec_char
 mean(vec_char)
 
+## mean of vec_factor
 mean(vec_factor)
 
 ```
 
+The numeric 
+
+##Part 3 - Coercing variables
+
 In some cases, you can explicitly convert variables from one type to another. 
-Write a code chunk that applies the as.numeric function to the logical, character, 
+Write a code chunk that applies the as.numeric function to the logical, character,
 and factor variables (please show this chunk but not the output). What happens? 
 
 
 ```{r}
 
-vec_random_greater_2_factor = as.factor(vec_random_greater_2) 
+vec_random_greater_2_factor = as.factor(prob_1_data_frame$vec_num_random_sample) 
 class(vec_random_greater_2_factor)
 
 vec_char_factor = as.factor(vec_char)
@@ -95,6 +111,7 @@ class(vec_factor_factor)
 
 ```
 
+##Part 4 - Coercing variables (cont.)
 
 In a second code chunk, convert your character variable from character to factor
 to numeric; similarly, convert your factor variable from factor to character to 
@@ -139,8 +156,9 @@ vec_factor_char_num
 
 
 
-#Problem 2
+#Problem 2 - Plotting and inline R code
 
+##Part 1 - Create a Data Frame
 Create a data frame comprised of:
 
 * x: a random sample of size 1000 from a standard Normal distribution
@@ -150,25 +168,24 @@ Create a data frame comprised of:
 * A factor vector created by coercing the above logical vector
 
 ```{r}
+
+## set seed to ensure reproducibility
 set.seed(9) 
 
-example_df2 = tibble(
+##define datframe containing 2 random sample variables. Next, a logical variable
+##is created based on the addition of the random sample variables, and is then 
+##coerced into a numeric and factor variable. 
+prob_2_data_frame = tibble(
   x = rnorm(1000),
   y = rnorm(1000),
-  z = (x + y) > 0,
-  z_num = as.numeric(z),
-  z_factor = as.factor(z)
+  z_logical = (x + y) > 0,
+  z_num = as.numeric(z_logical),
+  z_factor = as.factor(z_logical)
 )
 
-nrow(example_df2)
-
-t = as.data.frame(example_df2, row.names = z, optional = TRUE)
-library(plyr)
-help(count)
-count(example_df2, vars = example_df$z)
-
-
 ```
+
+##Part 2 - Inline Description of Data Frame Variables
 
 * Write a short description of your vector using inline R code, including: 
 * the size of the dataset * the mean and median of x * the proportion of cases 
@@ -180,6 +197,8 @@ of x is 'r mean(x)' and the median is 'r median(x)'. There are XX cases in
 which the logical vector, z is TRUE. 
 ##still need to figure out last inline code
 
+##Part 3 - Scatterplots
+
 Make a scatterplot of y vs x; color points using the logical variable (adding 
 color = ... inside of aes in your ggplot code should help). Make a second and 
 third scatterplot that color points using the numeric and factor variables, 
@@ -187,21 +206,28 @@ respectively, and comment on the color scales.
 
 ```{r}
 
-ggplot(example_df2, aes(x = y, y = x, color = z)) + geom_point()
+##scatterplot of y vs x using z_logical to color points
+ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
-ggplot(example_df2, aes(x = y, y = x, color = z_num)) + geom_point()
+##scatterplot of y vs x using z_num to color points
+ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_num)) + geom_point()
 
-ggplot(example_df2, aes(x = y, y = x, color = z_factor)) + geom_point()
-
+##scatterplot of y vs x using z_factor to color points
+ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_factor)) + geom_point()
 
 ```
+
+##Part 4 - Exporting Scatterplot
 
 Export your first scatterplot to your project directory using ggsave.
 
 ```{r}
+##scatterplot of y vs x using z_logical to color points
+ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
-ggplot(example_df2, aes(x = y, y = x, color = z)) + geom_point()
-ggsave("scatter_plot.pdf", height = 4, width = 6)
+##scatterplot of y vs. x using z_logical to color points is exported to project
+##diretory
+ggsave("prob_2_random_sample_scatter_plot.pdf", height = 4, width = 6)
 
 ```
 
