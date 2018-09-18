@@ -7,7 +7,7 @@ output: html_document
 
 #Problem 0.1 - Workflow
 
-###_Prompt:_
+###Prompt:
 This “problem” focuses on the use of R Markdown to write reproducible reports,
 GitHub for version control, and R Projects to organize your work.
 
@@ -28,6 +28,7 @@ that your work is reproducible._
 
 #Problem 0.2 - Styling
 
+###Prompt:
 This “problem” focuses on correct styling for your solutions to Problems 1 and 2.
 We will look for:
 
@@ -39,6 +40,8 @@ We will look for:
 #Problem 1 - Variable types and coercion
 
 ##Part 1 - Create  a data frame
+
+###Prompt:
 Create a data frame comprised of:
 
 * A random sample of size 10 from a uniform [0, 5] distribution
@@ -46,7 +49,9 @@ Create a data frame comprised of:
 * A (length-10) character vector
 * A (length-10) factor vector
 
+###Response:
 ```{r}
+rm(list=ls())
 
 library(tidyverse)
 
@@ -55,110 +60,109 @@ set.seed(2)
 
 ##define datframe containing four different types of vectors
 prob_1_data_frame = tibble(
-  vec_num_random_sample = rnorm(10, sd = 5),
-  vec_logical_random_sample_greater_2 = vec_num_random_sample > 2,
+  vec_numeric = rnorm(10, sd = 5),
+  vec_logical = vec_numeric > 2,
   vec_char = c("Puppies", "make", "the", "world", "go", "round", "and", "round", 
                "and", "round"),
   vec_factor = factor(c("male", "male", "female", "female", "male", "male", 
                         "female", "female", "male", "female"))
 )
+
 ```
 
-
 ##Part 2 - Mean of variable types
+
+###Prompt:
 Try to take the mean of each variable in your dataframe. What works and what 
 doesn’t? Why?
 
-
+###Response:
 ```{r}
-
-## specify to use this data frame when evaluating variables
-attach(prob_1_data_frame)
-
 ## mean of vec_num_random_sample
-mean(vec_num_random_sample)
+mean(prob_1_data_frame$vec_numeric)
 
 ##mean of vec_logical_random_sample_greater_2
-mean(vec_logical_random_sample_greater_2)
+mean(prob_1_data_frame$vec_logical)
 
 ## mean of vec_char
-mean(vec_char)
+mean(prob_1_data_frame$vec_char)
 
 ## mean of vec_factor
-mean(vec_factor)
+mean(prob_1_data_frame$vec_factor)
 
 ```
 
-The numeric 
+The mean of numeric variable works and returns an arithmetic mean of all of the 
+numbers in the random sample. The mean of the logical variable also works and returns 
+a number,which represents the percent of "TRUE" values in the vector (i.e. TRUE is 
+converted to 1, FALSE is converted to 0 and arithmetic mean is taken). The mean of the
+character and factor vectors do not work because there is no logical way to add up 
+all of the values and take the average. An "NA" is returned. 
 
 ##Part 3 - Coercing variables
 
+###Prompt:
 In some cases, you can explicitly convert variables from one type to another. 
 Write a code chunk that applies the as.numeric function to the logical, character,
 and factor variables (please show this chunk but not the output). What happens? 
 
+###Response:
+```{r, eval = FALSE}
 
-```{r}
+## convert logical variable to numeric variable
+as.numeric(vec_logical) 
 
-vec_random_greater_2_factor = as.factor(prob_1_data_frame$vec_num_random_sample) 
-class(vec_random_greater_2_factor)
+# convert character variable to numeric variable
+as.numeric(vec_char) 
 
-vec_char_factor = as.factor(vec_char)
-class(vec_char_factor)
-
-vec_factor_factor = as.factor(vec_factor) 
-class(vec_factor_factor)
+#convert factor variable to numeric variable
+as.numeric(vec_factor) 
 
 ```
 
+When converting different variable types to numeric, the following occurs: 
+* Logical variables: "TRUE" values convert to 1 and "FALSE" values convert to 0.
+* Character variables: unable to convert to a numeric variable and NAs are introduced.
+* Factor variables: unique values are ordered alphabetically and then assigned an ascending number, starting at 1. Each value in the vector is then assigned its appropriate number. 
+
 ##Part 4 - Coercing variables (cont.)
 
+###Prompt:
 In a second code chunk, convert your character variable from character to factor
 to numeric; similarly, convert your factor variable from factor to character to 
 numeric. What happens?
 
+###Response:
 ```{r}
-#vec_char: character to factor to numeric
-class(vec_char)
-vec_char
-#character
+## convert character to factor to numeric 
+vec_char_to_factor = as.factor(vec_char)
+vec_char_to_factor_to_numeric = as.numeric(vec_char_to_factor)
 
-vec_char_factor2 = as.factor(vec_char)
-class(vec_char_factor2)
-vec_char_factor2
-#factor
+##add in code to review new vectors?????
 
-vec_char_num = as.numeric(vec_char_factor2)
-class(vec_char_num)
-#numeric
-vec_char_num
-
-## orders them; lose the character information
-
-#vec_factor: factor to character to numeric
-
-class(vec_factor)
-#factor
-vec_factor
-
-vec_factor_char = as.character(vec_factor)
-class(vec_factor_char)
-#character 
-vec_factor_char
-
-vec_factor_char_num = as.numeric(vec_factor_char)
-#NAs introduced by coercion 
-class(vec_factor_char_num)
-vec_factor_char_num
-#loses all information => goes to NAs
-
+##convert factor to character to numeric
+vec_factor_to_char = as.character(vec_factor)
+vec_factor_to_char_to_num = as.numeric(vec_factor_to_char)
 ```
 
+When converting from character to factor, the character information is not lost, but 
+each of the unique character sequences are converted into different factor levels. 
+(The characters also lose their quotation marks)
+Further, when the numeric -> factor vector is converted to numeric, the unique values
+(or the factor levels) are ordered alphabetically and assigned an ascending number, 
+starting at 1. Each value in the vector is then assigned its appropriate number. 
 
+When converting from factor to charcter, there is no information lost. The factor words
+just become character words (as seen with the introduction of quotation marks). 
+When the factor -> character vector is converted to a number, information is lost. 
+Since there is no logical way to convert characters to numbers, NAs for each value
+is introduced. 
 
 #Problem 2 - Plotting and inline R code
 
 ##Part 1 - Create a Data Frame
+
+###Prompt:
 Create a data frame comprised of:
 
 * x: a random sample of size 1000 from a standard Normal distribution
@@ -167,66 +171,80 @@ Create a data frame comprised of:
 * A numeric vector created by coercing the above logical vector
 * A factor vector created by coercing the above logical vector
 
+###Response:
 ```{r}
-
 ## set seed to ensure reproducibility
 set.seed(9) 
 
-##define datframe containing 2 random sample variables. Next, a logical variable
-##is created based on the addition of the random sample variables, and is then 
-##coerced into a numeric and factor variable. 
+##define datframe containing5 different variables as defined in the prompt above 
 prob_2_data_frame = tibble(
   x = rnorm(1000),
   y = rnorm(1000),
   z_logical = (x + y) > 0,
-  z_num = as.numeric(z_logical),
+  z_numeric = as.numeric(z_logical),
   z_factor = as.factor(z_logical)
 )
-
 ```
 
 ##Part 2 - Inline Description of Data Frame Variables
 
+###Prompt:
 * Write a short description of your vector using inline R code, including: 
 * the size of the dataset * the mean and median of x * the proportion of cases 
 for which the logical vector is TRUE
 
-Next, I am going to describe the dataset that I just created.  There 
-are 'r nrow(example_df2)' columns and 'r nrow(example_df2)' rows. The mean 
-of x is 'r mean(x)' and the median is 'r median(x)'. There are XX cases in 
-which the logical vector, z is TRUE. 
+###Response:
+There are 'r nrow(example_df2)' columns and 'r nrow(example_df2)' rows in the data 
+set created for problem 2. The mean of the variable, x is 'r mean(x)' and the median 
+is 'r median(x)'. There are XX cases in which the logical vector, z is TRUE. 
 ##still need to figure out last inline code
 
 ##Part 3 - Scatterplots
 
+###Prompt:
 Make a scatterplot of y vs x; color points using the logical variable (adding 
 color = ... inside of aes in your ggplot code should help). Make a second and 
 third scatterplot that color points using the numeric and factor variables, 
 respectively, and comment on the color scales.
 
+###Response:
 ```{r}
 
 ##scatterplot of y vs x using z_logical to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
 ##scatterplot of y vs x using z_num to color points
-ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_num)) + geom_point()
+ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_numeric)) + geom_point()
 
 ##scatterplot of y vs x using z_factor to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_factor)) + geom_point()
 
 ```
 
+The logical, numeric and factor "z" variables all contain the same information, so it's
+not surprising to see a common in all three scatterplots. Each plot displays a pretty
+distinct line separtaing colors along y = -x. This is because when x + y > 0, z_logical
+= "TRUE", z_numeric = 1 and z_factor is TRUE; in all three scatterplots, these groupings
+appear as one color. When x + y =< 0, z_logical = "FALSE", z_numeric = 0 and z_factor =
+FALSE and the coloring of these points appear in a different color. 
+
+The biggest difference in these three plots is found in the scatterplot grouped by the 
+numeric variable. Because this variable can take on any value between 0 and 1, a color
+gradient is possible; in this case, because only 0s and 1s are present, only the 
+lightest and darkest colors are used. 
+
+
 ##Part 4 - Exporting Scatterplot
 
+###Prompt:
 Export your first scatterplot to your project directory using ggsave.
 
+###Response:
 ```{r}
 ##scatterplot of y vs x using z_logical to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
-##scatterplot of y vs. x using z_logical to color points is exported to project
-##diretory
+##scatterplot of y vs. x using z_logical to color points is exported to repository
 ggsave("prob_2_random_sample_scatter_plot.pdf", height = 4, width = 6)
 
 ```
