@@ -51,14 +51,12 @@ Create a data frame comprised of:
 
 ###Response:
 ```{r}
-rm(list=ls())
-
 library(tidyverse)
 
 ## set seed to ensure reproducibility
 set.seed(2)
 
-##define datframe containing four different types of vectors
+## define datframe containing four different types of vectors
 prob_1_data_frame = tibble(
   vec_numeric = rnorm(10, sd = 5),
   vec_logical = vec_numeric > 2,
@@ -67,7 +65,6 @@ prob_1_data_frame = tibble(
   vec_factor = factor(c("male", "male", "female", "female", "male", "male", 
                         "female", "female", "male", "female"))
 )
-
 ```
 
 ##Part 2 - Mean of variable types
@@ -81,7 +78,7 @@ doesn’t? Why?
 ## mean of vec_num_random_sample
 mean(prob_1_data_frame$vec_numeric)
 
-##mean of vec_logical_random_sample_greater_2
+## mean of vec_logical_random_sample_greater_2
 mean(prob_1_data_frame$vec_logical)
 
 ## mean of vec_char
@@ -89,7 +86,6 @@ mean(prob_1_data_frame$vec_char)
 
 ## mean of vec_factor
 mean(prob_1_data_frame$vec_factor)
-
 ```
 
 The mean of numeric variable works and returns an arithmetic mean of all of the 
@@ -108,19 +104,18 @@ and factor variables (please show this chunk but not the output). What happens?
 
 ###Response:
 ```{r, eval = FALSE}
-
 ## convert logical variable to numeric variable
 as.numeric(vec_logical) 
 
 # convert character variable to numeric variable
 as.numeric(vec_char) 
 
-#convert factor variable to numeric variable
+# convert factor variable to numeric variable
 as.numeric(vec_factor) 
-
 ```
 
 When converting different variable types to numeric, the following occurs: 
+
 * Logical variables: "TRUE" values convert to 1 and "FALSE" values convert to 0.
 * Character variables: unable to convert to a numeric variable and NAs are introduced.
 * Factor variables: unique values are ordered alphabetically and then assigned an ascending number, starting at 1. Each value in the vector is then assigned its appropriate number. 
@@ -135,13 +130,11 @@ numeric. What happens?
 ###Response:
 ```{r}
 ## convert character to factor to numeric 
-vec_char_to_factor = as.factor(vec_char)
+vec_char_to_factor = as.factor(prob_1_data_frame$vec_char)
 vec_char_to_factor_to_numeric = as.numeric(vec_char_to_factor)
 
-##add in code to review new vectors?????
-
-##convert factor to character to numeric
-vec_factor_to_char = as.character(vec_factor)
+## convert factor to character to numeric
+vec_factor_to_char = as.character(prob_1_data_frame$vec_factor)
 vec_factor_to_char_to_num = as.numeric(vec_factor_to_char)
 ```
 
@@ -160,7 +153,7 @@ is introduced.
 
 #Problem 2 - Plotting and inline R code
 
-##Part 1 - Create a Data Frame
+##Part 1 - Create a data frame
 
 ###Prompt:
 Create a data frame comprised of:
@@ -176,7 +169,7 @@ Create a data frame comprised of:
 ## set seed to ensure reproducibility
 set.seed(9) 
 
-##define datframe containing5 different variables as defined in the prompt above 
+## define datframe containing different variables as defined in the prompt above 
 prob_2_data_frame = tibble(
   x = rnorm(1000),
   y = rnorm(1000),
@@ -186,18 +179,22 @@ prob_2_data_frame = tibble(
 )
 ```
 
-##Part 2 - Inline Description of Data Frame Variables
+##Part 2 - Inline description of data frame variables
 
 ###Prompt:
 * Write a short description of your vector using inline R code, including: 
 * the size of the dataset * the mean and median of x * the proportion of cases 
 for which the logical vector is TRUE
 
+```{r}
+library(plyr)
+```
+
 ###Response:
-There are 'r nrow(example_df2)' columns and 'r nrow(example_df2)' rows in the data 
-set created for problem 2. The mean of the variable, x is 'r mean(x)' and the median 
-is 'r median(x)'. There are XX cases in which the logical vector, z is TRUE. 
-##still need to figure out last inline code
+There are `r ncol(prob_2_data_frame)` columns and `r nrow(prob_2_data_frame)` rows 
+in the data set created for problem 2. The mean of the variable, x is `r mean(prob_2_data_frame$x)` and the median is `r median(prob_2_data_frame$x)`. 
+There are `r (count(prob_2_data_frame$z_logical))$freq[2]` cases in which the logical
+vector, z_logical, is TRUE. 
 
 ##Part 3 - Scatterplots
 
@@ -209,14 +206,13 @@ respectively, and comment on the color scales.
 
 ###Response:
 ```{r}
-
-##scatterplot of y vs x using z_logical to color points
+## scatterplot of y vs x using z_logical to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
-##scatterplot of y vs x using z_num to color points
+## scatterplot of y vs x using z_num to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_numeric)) + geom_point()
 
-##scatterplot of y vs x using z_factor to color points
+## scatterplot of y vs x using z_factor to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_factor)) + geom_point()
 
 ```
@@ -234,7 +230,7 @@ gradient is possible; in this case, because only 0s and 1s are present, only the
 lightest and darkest colors are used. 
 
 
-##Part 4 - Exporting Scatterplot
+##Part 4 - Exporting scatterplot
 
 ###Prompt:
 Export your first scatterplot to your project directory using ggsave.
@@ -244,7 +240,7 @@ Export your first scatterplot to your project directory using ggsave.
 ##scatterplot of y vs x using z_logical to color points
 ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
 
-##scatterplot of y vs. x using z_logical to color points is exported to repository
+##scatterplot of y vs x using z_logical to color points is exported to repository
 ggsave("prob_2_random_sample_scatter_plot.pdf", height = 4, width = 6)
 
 ```
