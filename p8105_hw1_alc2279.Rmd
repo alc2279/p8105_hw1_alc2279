@@ -8,13 +8,13 @@ output: html_document
 #Problem 0.1 - Workflow
 
 ###Prompt:
-This “problem” focuses on the use of R Markdown to write reproducible reports,
+This "problem"" focuses on the use of R Markdown to write reproducible reports,
 GitHub for version control, and R Projects to organize your work.
 
 To that end:
 
 * create a public GitHub repo + local R Project; we suggest naming this 
-repo / directory p8105_hw1_YOURUNI (e.g.  p8105_hw1_ajg2202 for Jeff), but that’s
+repo / directory p8105_hw1_YOURUNI (e.g.  p8105_hw1_ajg2202 for Jeff), but that's
 not required
 * create a single .Rmd file named p8105_hw1_YOURUNI.Rmd that renders to 
 github_document
@@ -29,7 +29,7 @@ that your work is reproducible._
 #Problem 0.2 - Styling
 
 ###Prompt:
-This “problem” focuses on correct styling for your solutions to Problems 1 and 2.
+This "problem"  focuses on correct styling for your solutions to Problems 1 and 2.
 We will look for:
 
 * meaningful variable / object names
@@ -71,7 +71,7 @@ prob_1_data_frame = tibble(
 
 ###Prompt:
 Try to take the mean of each variable in your dataframe. What works and what 
-doesn’t? Why?
+doesn't? Why?
 
 ###Response:
 ```{r}
