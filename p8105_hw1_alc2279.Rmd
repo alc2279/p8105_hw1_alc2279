@@ -236,6 +236,6 @@ Export your first scatterplot to your project directory using ggsave.
 ###Response:
 ```{r}
 ##export scatterplot of y vs x using z_logical to color points
-ggsave("prob_2_random_sample_scatter_plot.pdf", plot = plot_y_x_color_logical, height = 4, width = 6)
+ggsave("prob_2_y_x_color_logical_scatter_plot.pdf", plot = plot_y_x_color_logical, height = 4, width = 6)
 ```
 
