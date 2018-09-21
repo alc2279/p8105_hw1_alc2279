@@ -2,7 +2,7 @@
 title:  "P8105 Data Science: Homework 1"
 author: "Annie Clark (alc2279)"
 date:   2018-09-21
-output: html_document 
+output: github_document 
 ---
 
 #Problem 0.1 - Workflow
