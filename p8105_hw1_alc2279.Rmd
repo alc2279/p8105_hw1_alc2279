@@ -1,14 +1,14 @@
 ---
 title:  "P8105 Data Science: Homework 1"
 author: "Annie Clark (alc2279)"
-date:   2018-09-15
-output: html_document
+date:   2018-09-21
+output: html_document 
 ---
 
 #Problem 0.1 - Workflow
 
 ###Prompt:
-This "problem"" focuses on the use of R Markdown to write reproducible reports,
+This "problem" focuses on the use of R Markdown to write reproducible reports,
 GitHub for version control, and R Projects to organize your work.
 
 To that end:
@@ -24,7 +24,7 @@ your git commit history should reflect the process you used to solve these Probl
 
 For this Problem, we will assess adherence to the instructions above regarding repo
 structure, git commit history, and whether we are able to knit your .Rmd to ensure
-that your work is reproducible._
+that your work is reproducible.
 
 #Problem 0.2 - Styling
 
@@ -53,12 +53,12 @@ Create a data frame comprised of:
 ```{r}
 library(tidyverse)
 
-## set seed to ensure reproducibility
+# set seed to ensure reproducibility
 set.seed(2)
 
-## define datframe containing four different types of vectors
+# create data frame 
 prob_1_data_frame = tibble(
-  vec_numeric = rnorm(10, sd = 5),
+  vec_numeric = runif(10, 0, 5),
   vec_logical = vec_numeric > 2,
   vec_char = c("Puppies", "make", "the", "world", "go", "round", "and", "round", 
                "and", "round"),
@@ -75,25 +75,25 @@ doesn't? Why?
 
 ###Response:
 ```{r}
-## mean of vec_num_random_sample
+# mean of numeric vector
 mean(prob_1_data_frame$vec_numeric)
 
-## mean of vec_logical_random_sample_greater_2
+## mean of logical vector
 mean(prob_1_data_frame$vec_logical)
 
-## mean of vec_char
+# mean of character vector
 mean(prob_1_data_frame$vec_char)
 
-## mean of vec_factor
+# mean of factor vector
 mean(prob_1_data_frame$vec_factor)
 ```
 
 The mean of numeric variable works and returns an arithmetic mean of all of the 
 numbers in the random sample. The mean of the logical variable also works and returns 
-a number,which represents the percent of "TRUE" values in the vector (i.e. TRUE is 
+a number, which represents the proportion of "TRUE" values in the vector (i.e. TRUE is 
 converted to 1, FALSE is converted to 0 and arithmetic mean is taken). The mean of the
-character and factor vectors do not work because there is no logical way to add up 
-all of the values and take the average. An "NA" is returned. 
+character and factor vectors do not work because there is no logical way for R to add up 
+all of the values and take the average. An "NA" is returned for these two variables.
 
 ##Part 3 - Coercing variables
 
@@ -104,13 +104,13 @@ and factor variables (please show this chunk but not the output). What happens?
 
 ###Response:
 ```{r, eval = FALSE}
-## convert logical variable to numeric variable
+# convert logical to numeric
 as.numeric(vec_logical) 
 
-# convert character variable to numeric variable
+# convert character to numeric
 as.numeric(vec_char) 
 
-# convert factor variable to numeric variable
+# convert factor to numeric
 as.numeric(vec_factor) 
 ```
 
@@ -129,27 +129,30 @@ numeric. What happens?
 
 ###Response:
 ```{r}
-## convert character to factor to numeric 
+# convert character to factor to numeric 
 vec_char_to_factor = as.factor(prob_1_data_frame$vec_char)
+vec_char_to_factor
 vec_char_to_factor_to_numeric = as.numeric(vec_char_to_factor)
+vec_char_to_factor_to_numeric
 
-## convert factor to character to numeric
+# convert factor to character to numeric
 vec_factor_to_char = as.character(prob_1_data_frame$vec_factor)
+vec_factor_to_char
 vec_factor_to_char_to_num = as.numeric(vec_factor_to_char)
+vec_factor_to_char_to_num
 ```
 
 When converting from character to factor, the character information is not lost, but 
 each of the unique character sequences are converted into different factor levels. 
-(The characters also lose their quotation marks)
-Further, when the numeric -> factor vector is converted to numeric, the unique values
+(The characters also lose their quotation marks.)
+Further, when the character -> factor vector is converted to numeric, the unique values
 (or the factor levels) are ordered alphabetically and assigned an ascending number, 
 starting at 1. Each value in the vector is then assigned its appropriate number. 
 
-When converting from factor to charcter, there is no information lost. The factor words
-just become character words (as seen with the introduction of quotation marks). 
-When the factor -> character vector is converted to a number, information is lost. 
-Since there is no logical way to convert characters to numbers, NAs for each value
-is introduced. 
+When converting from factor to charcter, there is no information lost. The factor values just become characters (as seen with the introduction of quotation marks). 
+When the factor -> character vector is converted to a number, information IS lost. 
+Since there is no logical way for R to convert characters to numbers, NAs for each 
+value is introduced. 
 
 #Problem 2 - Plotting and inline R code
 
@@ -166,10 +169,10 @@ Create a data frame comprised of:
 
 ###Response:
 ```{r}
-## set seed to ensure reproducibility
+# set seed to ensure reproducibility
 set.seed(9) 
 
-## define datframe containing different variables as defined in the prompt above 
+# define datframe
 prob_2_data_frame = tibble(
   x = rnorm(1000),
   y = rnorm(1000),
@@ -183,18 +186,14 @@ prob_2_data_frame = tibble(
 
 ###Prompt:
 * Write a short description of your vector using inline R code, including: 
-* the size of the dataset * the mean and median of x * the proportion of cases 
-for which the logical vector is TRUE
-
-```{r}
-library(plyr)
-```
+the size of the dataset, the mean and median of x, the proportion of cases 
+for which the logical vector is TRUE.
 
 ###Response:
 There are `r ncol(prob_2_data_frame)` columns and `r nrow(prob_2_data_frame)` rows 
-in the data set created for problem 2. The mean of the variable, x is `r mean(prob_2_data_frame$x)` and the median is `r median(prob_2_data_frame$x)`. 
-There are `r (count(prob_2_data_frame$z_logical))$freq[2]` cases in which the logical
-vector, z_logical, is TRUE. 
+in the data set created for problem 2. The mean of variable x is, `r mean(prob_2_data_frame$x)` and the median is, `r median(prob_2_data_frame$x)`. 
+The proportion of cases for which the logical vector, z_logical, is TRUE is
+`r sum(prob_2_data_frame$z_numeric) / nrow(prob_2_data_frame)`.
 
 ##Part 3 - Scatterplots
 
@@ -206,23 +205,22 @@ respectively, and comment on the color scales.
 
 ###Response:
 ```{r}
-## scatterplot of y vs x using z_logical to color points
-ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
+# scatterplot of y vs x using z_logical to color points
+plot_y_x_color_logical = ggplot(prob_2_data_frame, aes(x = x, y = y, color = z_logical)) + geom_point()
+plot_y_x_color_logical
 
-## scatterplot of y vs x using z_num to color points
-ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_numeric)) + geom_point()
+# scatterplot of y vs x using z_num to color points
+ggplot(prob_2_data_frame, aes(x = x, y = y, color = z_numeric)) + geom_point()
 
-## scatterplot of y vs x using z_factor to color points
-ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_factor)) + geom_point()
+# scatterplot of y vs x using z_factor to color points
+ggplot(prob_2_data_frame, aes(x = x, y = y, color = z_factor)) + geom_point()
 
 ```
 
 The logical, numeric and factor "z" variables all contain the same information, so it's
-not surprising to see a common in all three scatterplots. Each plot displays a pretty
-distinct line separtaing colors along y = -x. This is because when x + y > 0, z_logical
-= "TRUE", z_numeric = 1 and z_factor is TRUE; in all three scatterplots, these groupings
-appear as one color. When x + y =< 0, z_logical = "FALSE", z_numeric = 0 and z_factor =
-FALSE and the coloring of these points appear in a different color. 
+not surprising to see a common trend in all three scatterplots. Each plot displays a pretty distinct line separtaing colors along y = -x. This is because when x + y > 0,
+z_logical = "TRUE", z_numeric = 1 and z_factor are TRUE; in all three scatterplots, these groupings appear as one color. When x + y =< 0, z_logical = "FALSE", z_numeric = 
+0 and z_factor = FALSE and the coloring of these points appear in a different color. 
 
 The biggest difference in these three plots is found in the scatterplot grouped by the 
 numeric variable. Because this variable can take on any value between 0 and 1, a color
@@ -237,11 +235,7 @@ Export your first scatterplot to your project directory using ggsave.
 
 ###Response:
 ```{r}
-##scatterplot of y vs x using z_logical to color points
-ggplot(prob_2_data_frame, aes(x = y, y = x, color = z_logical)) + geom_point()
-
-##scatterplot of y vs x using z_logical to color points is exported to repository
-ggsave("prob_2_random_sample_scatter_plot.pdf", height = 4, width = 6)
-
+##export scatterplot of y vs x using z_logical to color points
+ggsave("prob_2_random_sample_scatter_plot.pdf", plot = plot_y_x_color_logical, height = 4, width = 6)
 ```
 
